@@ -1,26 +1,64 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-primary-base: #4f46e5;
+  --color-primary-hover: #4338ca;
+  
+  --color-background-base: #f9fafb;
+  --color-surface-base: #ffffff;
+  
+  --color-text-main: #111827;
+  --color-text-muted: #6b7280;
+  
+  --color-border-base: #e5e7eb;
+
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: var(--color-background-base);
+    --foreground: var(--color-text-main);
+  }
+
+  /* Dark mode variants based on Stitch AI Hub design */
+  .dark {
+    --background: #0f1115;
+    --foreground: #f3f4f6;
+    
+    --color-background-base: #0f1115;
+    --color-surface-base: #1a1d24;
+    
+    --color-text-main: #f3f4f6;
+    --color-text-muted: #9ca3af;
+    
+    --color-border-base: #2d3139;
+    
+    --color-primary-base: #6366f1;
+    --color-primary-hover: #818cf8;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-inter);
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl bg-[var(--color-primary-base)] px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-base)] focus:ring-offset-2;
+  }
+  
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-xl bg-[var(--color-surface-base)] px-6 py-3 text-sm font-medium text-[var(--color-text-main)] border border-[var(--color-border-base)] transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:hover:bg-gray-800;
+  }
+
+  .card-container {
+    @apply rounded-2xl bg-[var(--color-surface-base)] border border-[var(--color-border-base)] shadow-sm overflow-hidden;
+  }
 }
