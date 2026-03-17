@@ -1,11 +1,11 @@
 import { MetadataRoute } from 'next';
 import { TOOLS } from '@/lib/toolsConfig';
 
-const SITE_URL = "https://omanitool.vercel.app";
-const LAST_MODIFIED = "2024-03-24T00:00:00.000Z";
+const SITE_URL = 'https://omanitool.vercel.app';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  // 1. Static Routes
+  const now = new Date();
+
   const staticRoutes = [
     '',
     '/tools/pdf',
@@ -16,15 +16,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/tools/media-downloader',
   ].map((route) => ({
     url: `${SITE_URL}${route}`,
-    lastModified: LAST_MODIFIED,
+    lastModified: now,
     changeFrequency: 'daily' as const,
-    priority: 1.0,
+    priority: 1,
   }));
 
-  // 2. Tool Routes
   const toolRoutes = TOOLS.map((tool) => ({
     url: `${SITE_URL}${tool.path}`,
-    lastModified: LAST_MODIFIED,
+    lastModified: now,
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }));
