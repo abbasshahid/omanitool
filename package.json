@@ -17,6 +17,7 @@
     "@stripe/stripe-js": "^8.10.0",
     "@tailwindcss/typography": "^0.5.19",
     "@types/react-signature-canvas": "^1.0.7",
+    "@vercel/analytics": "^2.0.1",
     "browser-image-compression": "^2.0.2",
     "canvas": "^3.2.1",
     "gray-matter": "^4.0.3",
