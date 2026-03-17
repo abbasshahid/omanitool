@@ -2,6 +2,13 @@ import { getToolsByCategory } from '@/lib/toolsConfig';
 import ToolCard from '@/components/ui/ToolCard';
 import AdSenseBanner from '@/components/ads/AdSenseBanner';
 import { Sparkles, Zap, Shield } from 'lucide-react';
+import { constructMetadata } from '@/lib/seo';
+
+export const metadata = constructMetadata({
+  title: 'AI Hub - Free AI-Powered Productivity & Creative Tools | OmniTool',
+  description: 'Explore our suite of free AI tools. From AI image generation to text summarization and code assistance. Supercharge your workflow with next-gen AI utilities.',
+  canonical: '/ai-hub',
+});
 
 export default function AIHubPage() {
   const aiTools = getToolsByCategory('ai');
@@ -10,21 +17,21 @@ export default function AIHubPage() {
     <div className="flex flex-col min-h-screen bg-[var(--color-background-base)]">
       
       {/* AI Hub Hero */}
-      <section className="bg-[var(--color-surface-base)] border-b border-[var(--color-border-base)] py-16">
+      <section className="bg-[var(--color-surface-base)] border-b border-[var(--color-border-base)] py-12 md:py-16">
         <div className="container mx-auto max-w-7xl px-4 xl:px-8">
-          <div className="flex flex-col lg:flex-row gap-12 items-center">
-            <div className="flex-1">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 text-sm font-medium mb-6">
+          <div className="flex flex-col lg:flex-row gap-10 md:gap-12 items-center">
+            <div className="flex-1 text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 text-xs sm:text-sm font-medium mb-6">
                 <Sparkles className="w-4 h-4" />
                 Powered by Advanced Models
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold text-[var(--color-text-main)] mb-6">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--color-text-main)] mb-6 leading-tight">
                 OmniTool <span className="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 to-purple-600">AI Hub</span>
               </h1>
-              <p className="text-xl text-[var(--color-text-muted)] mb-8 max-w-2xl">
+              <p className="text-base sm:text-lg md:text-xl text-[var(--color-text-muted)] mb-8 max-w-2xl mx-auto lg:mx-0">
                 Supercharge your productivity with specialized AI assistants. From text generation to code optimization, all within your browser.
               </p>
-              <div className="flex gap-6">
+              <div className="flex justify-center lg:justify-start gap-4 md:gap-6">
                 <div className="flex items-center gap-2 text-[var(--color-text-muted)] text-sm">
                   <Zap className="w-4 h-4 text-amber-500" /> Fast Execution
                 </div>
@@ -47,7 +54,7 @@ export default function AIHubPage() {
         <div className="flex flex-col lg:flex-row gap-10">
           
           <div className="flex-1">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 gap-4 md:gap-6">
               {aiTools.map((tool) => (
                 <ToolCard key={tool.id} tool={tool} />
               ))}

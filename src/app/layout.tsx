@@ -6,9 +6,17 @@ import Footer from '@/components/layout/Footer';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
-export const metadata: Metadata = {
-  title: 'OmniTool - Your All-in-One Digital Toolbox',
-  description: 'Empowering your workflow with simple, powerful online tools including Background Remover, Format Converter, and AI utilities.',
+import { constructMetadata } from '@/lib/seo';
+
+export const metadata: Metadata = constructMetadata({
+  title: 'OmniTool - Free All-in-One Online PDF, Image & AI Productivity Tools',
+  description: 'Boost your productivity with OmniTool. Free online tools for PDF editing, image conversion, background removal, and AI-powered text generation. No installation required.',
+});
+
+export const viewport = {
+  themeColor: '#4f46e5',
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({

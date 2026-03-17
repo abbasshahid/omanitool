@@ -27,7 +27,8 @@ export const TOOLS: ToolDefinition[] = [
     id: 'bg-remover',
     name: 'Background Remover',
     description: 'Instantly remove the background from images with AI precision. Free and high quality.',
-    category: 'image',
+    category: 'pdf',
+    subCategory: 'Image Tools',
     icon: Eraser,
     path: '/tools/background-remover',
     color: 'from-pink-500 to-rose-400',
@@ -36,7 +37,8 @@ export const TOOLS: ToolDefinition[] = [
     id: 'image-resizer',
     name: 'Image Resizer',
     description: 'Resize images in seconds with exact pixel dimensions or percentage scaling.',
-    category: 'image',
+    category: 'pdf',
+    subCategory: 'Image Tools',
     icon: MoveDiagonal,
     path: '/tools/image-resizer',
     color: 'from-blue-500 to-cyan-400',
@@ -45,7 +47,8 @@ export const TOOLS: ToolDefinition[] = [
     id: 'image-compressor',
     name: 'Image Compressor',
     description: 'Compress PNG, JPG, or WEBP files with the best quality/size ratio.',
-    category: 'image',
+    category: 'pdf',
+    subCategory: 'Image Tools',
     icon: Scissors,
     path: '/tools/image-compressor',
     color: 'from-emerald-500 to-teal-400',
@@ -146,7 +149,8 @@ export const TOOLS: ToolDefinition[] = [
   { id: 'sign-pdf', name: 'Sign PDF', description: 'Sign yourself or request electronic signatures from others.', category: 'pdf', subCategory: 'PDF Security', icon: PenTool, path: '/tools/sign-pdf', color: 'from-indigo-500 to-blue-400' },
   { id: 'redact-pdf', name: 'Redact PDF', description: 'Permanently remove visible text and graphics from a document.', category: 'pdf', subCategory: 'PDF Security', icon: EraserIcon, path: '/tools/redact-pdf', color: 'from-gray-700 to-slate-600' },
   { id: 'compare-pdf', name: 'Compare PDF', description: 'Compare two PDF documents to quickly spot changes.', category: 'pdf', subCategory: 'PDF Security', icon: GitCompare, path: '/tools/compare-pdf', color: 'from-purple-500 to-fuchsia-400' },
-  { id: 'translate-pdf', name: 'Translate PDF', description: 'Translate PDF documents into over 100 languages instantly.', category: 'pdf', subCategory: 'PDF Security', icon: Languages, path: '/tools/translate-pdf', color: 'from-sky-500 to-blue-400' }
+  { id: 'translate-pdf', name: 'Translate PDF', description: 'Translate PDF documents into over 100 languages instantly.', category: 'pdf', subCategory: 'PDF Security', icon: Languages, path: '/tools/translate-pdf', color: 'from-sky-500 to-blue-400' },
+  { id: 'media-downloader', name: 'Media Downloader', description: 'Download images and videos from URLs, including Social Media and E-commerce sites.', category: 'pdf', subCategory: 'Media Utilities', icon: FileImage, path: '/tools/media-downloader', color: 'from-purple-500 to-pink-500', isNew: true }
 ];
 
 export const getToolsByCategory = (category: ToolCategory) => 

@@ -3,6 +3,13 @@ import ToolCard from '@/components/ui/ToolCard';
 import AdSenseBanner from '@/components/ads/AdSenseBanner';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { constructMetadata } from '@/lib/seo';
+
+export const metadata = constructMetadata({
+  title: 'Free Online Document Tools - Convert & Format Files | OmniTool',
+  description: 'Powerful and easy-to-use document tools. Convert file formats, repair PDFs, and manage your documents online for free. Secure and fast directly in your browser.',
+  canonical: '/tools/document',
+});
 
 export default function DocumentToolsPage() {
   const tools = getToolsByCategory('document');
@@ -22,7 +29,7 @@ export default function DocumentToolsPage() {
           Online <span className="text-amber-500">Document</span> Tools
         </h1>
         <p className="text-xl text-[var(--color-text-muted)] max-w-2xl">
-          Easily convert format files and document schemas online.
+          Easily convert format files and document schemas online with professional-grade speed and accuracy.
         </p>
       </div>
 
