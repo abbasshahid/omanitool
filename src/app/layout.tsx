@@ -5,6 +5,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Analytics } from "@vercel/analytics/next";
 import Script from 'next/script';
+import CookieConsent from '@/components/ui/CookieConsent';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
@@ -43,6 +44,7 @@ export default function RootLayout({
         </main>
         <Footer />
         <Analytics />
+        <CookieConsent />
       </body>
     </html>
   );
