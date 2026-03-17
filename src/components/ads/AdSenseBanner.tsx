@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 interface AdSenseBannerProps {
   dataAdSlot: string;
@@ -16,20 +16,19 @@ export default function AdSenseBanner({
   className = '',
 }: AdSenseBannerProps) {
   const [isLoaded, setIsLoaded] = useState(false);
+  const initialized = useRef(false);
 
   useEffect(() => {
-    try {
-      if (typeof window !== "undefined") {
-        // Only load if not already loaded in development (strict mode double mount safety)
-        if (!isLoaded) {
-          ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
-          setIsLoaded(true);
-        }
+    if (typeof window !== "undefined" && (window as any).adsbygoogle && !initialized.current) {
+      try {
+        ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+        initialized.current = true; // Mark as initialized to prevent duplicate pushes
+        setIsLoaded(true); // Set state to true to hide fallback UI
+      } catch (err) {
+        console.error('AdSense Error:', err);
       }
-    } catch (err) {
-      console.error('AdSense Error:', err);
     }
-  }, [isLoaded]);
+  }, []); // Empty dependency array to run once on mount
 
   return (
     <div className={`w-full overflow-hidden flex justify-center items-center relative ${className}`}>

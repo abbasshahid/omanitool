@@ -26,19 +26,16 @@ export default function Footer() {
             <ul className="space-y-3">
               <li><Link href="/" className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors">All Tools</Link></li>
               <li><Link href="/ai-hub" className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors">AI Hub</Link></li>
-              <li><Link href="#" className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors">Templates</Link></li>
-              <li><Link href="#" className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors">Pricing</Link></li>
-              <li><Link href="#" className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors">API Resources</Link></li>
+              <li><Link href="/donate" className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors">Donation</Link></li>
             </ul>
           </div>
           
           <div>
             <h3 className="font-semibold text-[var(--color-text-main)] mb-4">Support</h3>
             <ul className="space-y-3">
-              <li><Link href="#" className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors">Help Center</Link></li>
-              <li><Link href="#" className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors">Contact Us</Link></li>
+              <li><a href="mailto:admin@omanitool.tech" className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors">Contact Us</a></li>
               <li><Link href="/privacy" className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors">Privacy Policy</Link></li>
-              <li><Link href="#" className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors">Terms of Service</Link></li>
+              <li><Link href="/terms" className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors">Terms of Service</Link></li>
               <li>
                 <button 
                   onClick={() => {
