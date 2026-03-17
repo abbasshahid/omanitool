@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next';
 import { TOOLS } from '@/lib/toolsConfig';
 
 const SITE_URL = "https://omanitool.vercel.app";
+const LAST_MODIFIED = "2024-03-24T00:00:00.000Z";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // 1. Static Routes
@@ -15,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/tools/media-downloader',
   ].map((route) => ({
     url: `${SITE_URL}${route}`,
-    lastModified: new Date(),
+    lastModified: LAST_MODIFIED,
     changeFrequency: 'daily' as const,
     priority: 1.0,
   }));
@@ -23,12 +24,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // 2. Tool Routes
   const toolRoutes = TOOLS.map((tool) => ({
     url: `${SITE_URL}${tool.path}`,
-    lastModified: new Date(),
+    lastModified: LAST_MODIFIED,
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }));
-
-  // Note: Future dynamic blog posts from the filesystem will need to be fetched here too
 
   return [...staticRoutes, ...toolRoutes];
 }
