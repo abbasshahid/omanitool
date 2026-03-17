@@ -5,7 +5,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Analytics } from "@vercel/analytics/next";
 import Script from 'next/script';
-import CookieConsent from '@/components/ui/CookieConsent';
+import GDPRConsent from '@/components/ui/GDPRConsent';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
@@ -30,12 +30,15 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
-        <Script
-          async
-          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
-          crossOrigin="anonymous"
-          strategy="lazyOnload"
-        />
+        {process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID && (
+          <Script
+            id="adsbygoogle-init"
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
+            crossOrigin="anonymous"
+            strategy="afterInteractive"
+          />
+        )}
       </head>
       <body className={`${inter.variable} min-h-screen flex flex-col font-sans antialiased`}>
         <Header />
@@ -44,7 +47,7 @@ export default function RootLayout({
         </main>
         <Footer />
         <Analytics />
-        <CookieConsent />
+        <GDPRConsent />
       </body>
     </html>
   );

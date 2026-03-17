@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 
 export default function Footer() {
@@ -35,8 +37,19 @@ export default function Footer() {
             <ul className="space-y-3">
               <li><Link href="#" className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors">Help Center</Link></li>
               <li><Link href="#" className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors">Contact Us</Link></li>
-              <li><Link href="#" className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors">Privacy Policy</Link></li>
+              <li><Link href="/privacy" className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors">Privacy Policy</Link></li>
               <li><Link href="#" className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors">Terms of Service</Link></li>
+              <li>
+                <button 
+                  onClick={() => {
+                    localStorage.removeItem('omnitool-gdpr-consent');
+                    window.location.reload();
+                  }}
+                  className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors text-left"
+                >
+                  Consent Settings
+                </button>
+              </li>
             </ul>
           </div>
         </div>
