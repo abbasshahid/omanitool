@@ -30,15 +30,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
-        {process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID && (
-          <Script
-            id="adsbygoogle-init"
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
-            crossOrigin="anonymous"
-            strategy="afterInteractive"
-          />
-        )}
+        <script 
+          async 
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6605360679202138" 
+          crossOrigin="anonymous" 
+        />
       </head>
       <body className={`${inter.variable} min-h-screen flex flex-col font-sans antialiased`}>
         <Header />
