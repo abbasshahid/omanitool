@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 import { TOOLS } from '@/lib/toolsConfig';
 
-const SITE_URL = "https://omnitool.com";
+const SITE_URL = "https://omanitool.vercel.app";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // 1. Static Routes
