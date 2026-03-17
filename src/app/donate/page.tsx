@@ -1,6 +1,8 @@
 import { constructMetadata } from '@/lib/seo';
 import DonationClient from '@/components/donation/DonationClient';
 
+import { Suspense } from 'react';
+
 export function generateMetadata() {
   return constructMetadata({
     title: 'Support OmniTool - Donate to Help Needy People',
@@ -12,7 +14,13 @@ export function generateMetadata() {
 export default function DonatePage() {
   return (
     <main className="min-h-screen pb-20">
-      <DonationClient />
+      <Suspense fallback={
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+        </div>
+      }>
+        <DonationClient />
+      </Suspense>
     </main>
   );
 }
