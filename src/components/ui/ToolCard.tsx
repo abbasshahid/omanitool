@@ -1,35 +1,35 @@
 import Link from 'next/link';
-import { ToolDefinition } from '@/lib/toolsConfig';
+import { toolPath, type Tool } from '@/lib/tools/registry';
 
-export default function ToolCard({ tool }: { tool: ToolDefinition }) {
+/**
+ * Cards carry no per-tool colour. With 50+ tools on one page, colour-coding each
+ * one turns the grid into noise; the accent is saved for hover and focus so the
+ * eye can scan names instead.
+ */
+export default function ToolCard({ tool, compact = false }: { tool: Tool; compact?: boolean }) {
   const Icon = tool.icon;
-  
+
   return (
-    <Link href={tool.path} className="group block">
-      <div className="card-container h-full p-6 transition-all duration-300 hover:shadow-md hover:border-gray-600">
-        <div className="flex items-start justify-between mb-4">
-          <div className={`w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br ${tool.color} shadow-sm group-hover:scale-110 transition-transform duration-300`}>
-            <Icon className="w-6 h-6 text-white" />
-          </div>
-          {tool.isNew && !tool.isUnderDevelopment && (
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-900 text-indigo-200">
-              New
-            </span>
-          )}
-          {tool.isUnderDevelopment && (
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-900/80 text-orange-200 whitespace-nowrap">
-              Requires API / Dev
-            </span>
-          )}
-        </div>
-        
-        <h3 className="text-lg font-semibold text-[var(--color-text-main)] mb-2 group-hover:text-indigo-400 transition-colors">
-          {tool.name}
-        </h3>
-        <p className="text-sm text-[var(--color-text-muted)] line-clamp-3">
-          {tool.description}
-        </p>
+    <Link
+      href={toolPath(tool)}
+      className="group relative flex flex-col gap-2 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] p-4 transition-all duration-150 hover:-translate-y-0.5 hover:border-[var(--signal)] hover:shadow-[var(--shadow-lift)]"
+    >
+      <div className="flex items-start justify-between gap-2">
+        <span className="grid size-9 place-items-center rounded-[var(--radius-md)] bg-[var(--surface-2)] text-[var(--text-muted)] transition-colors group-hover:bg-[var(--signal-soft)] group-hover:text-[var(--signal)]">
+          <Icon className="size-[18px]" />
+        </span>
+        {tool.isNew && (
+          <span className="rounded-full bg-[var(--signal-soft)] px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-[var(--signal)]">
+            New
+          </span>
+        )}
       </div>
+
+      <h3 className="text-[15px] font-semibold leading-snug text-[var(--text)]">{tool.name}</h3>
+
+      {!compact && (
+        <p className="text-[13px] leading-relaxed text-[var(--text-muted)]">{tool.tagline}</p>
+      )}
     </Link>
   );
 }
