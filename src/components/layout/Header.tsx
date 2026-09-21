@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ChevronDown, Heart, Menu, X } from 'lucide-react';
@@ -12,6 +12,7 @@ export default function Header() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openCategory, setOpenCategory] = useState<ToolCategory | null>(null);
+  const headerRef = useRef<HTMLElement>(null);
 
   // Route changes close whatever was open. Adjusting during render rather than
   // in an effect avoids a frame where the new page shows behind an open menu.
@@ -37,14 +38,21 @@ export default function Header() {
         setOpenCategory(null);
       }
     }
+    function onPointerDown(event: PointerEvent) {
+      if (!headerRef.current?.contains(event.target as Node)) setOpenCategory(null);
+    }
     document.addEventListener('keydown', onKeyDown);
-    return () => document.removeEventListener('keydown', onKeyDown);
+    document.addEventListener('pointerdown', onPointerDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('pointerdown', onPointerDown);
+    };
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--bg)]/85 backdrop-blur-md">
+    <header ref={headerRef} className="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--bg)]/85 backdrop-blur-md">
       <div className="shell">
-        <div className="flex h-16 items-center gap-4">
+        <div className="flex h-14 items-center gap-4">
           <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="OmniTool home">
             <Logo />
             <span className="font-display text-lg font-bold tracking-tight">OmniTool</span>
@@ -78,7 +86,9 @@ export default function Header() {
               })}
             </ul>
 
-            {openCategory && <MegaMenu category={openCategory} />}
+            {openCategory && (
+              <MegaMenu category={openCategory} onNavigate={() => setOpenCategory(null)} />
+            )}
           </nav>
 
           <div className="ml-auto flex items-center gap-2">
@@ -128,7 +138,13 @@ function Logo() {
   );
 }
 
-function MegaMenu({ category }: { category: ToolCategory }) {
+function MegaMenu({
+  category,
+  onNavigate,
+}: {
+  category: ToolCategory;
+  onNavigate: () => void;
+}) {
   const groups = getGroupedTools(category);
   const meta = CATEGORIES.find((entry) => entry.id === category)!;
 
@@ -136,40 +152,49 @@ function MegaMenu({ category }: { category: ToolCategory }) {
     <div className="absolute left-0 right-0 top-full z-50 pt-1">
       <div className="shell">
         <div className="animate-rise overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-pop)]">
-          <div className="flex items-baseline justify-between gap-4 border-b border-[var(--border)] px-5 py-3">
-            <p className="text-sm text-[var(--text-muted)]">{meta.blurb}</p>
+          <div className="flex items-baseline justify-between gap-4 border-b border-[var(--border)] px-4 py-2.5">
+            <p className="text-xs text-[var(--text-muted)]">{meta.blurb}</p>
             <Link
               href={`/tools/category/${category}`}
-              className="shrink-0 font-mono text-xs font-medium text-[var(--signal)] hover:underline"
+              onClick={onNavigate}
+              className="shrink-0 font-mono text-[11px] font-medium text-[var(--signal)] hover:underline"
             >
               All {meta.label.toLowerCase()} tools →
             </Link>
           </div>
 
-          <div className="grid gap-x-6 gap-y-5 p-5 sm:grid-cols-2 lg:grid-cols-4">
-            {groups.map(({ group, tools }) => (
-              <div key={group}>
-                <h3 className="eyebrow mb-2">{group}</h3>
-                <ul className="flex flex-col">
-                  {tools.map((tool) => {
-                    const Icon = tool.icon;
-                    return (
-                      <li key={tool.id}>
-                        <Link
-                          href={toolPath(tool)}
-                          className="group flex items-center gap-2 rounded-[var(--radius-sm)] px-2 py-1.5 -mx-2 transition-colors hover:bg-[var(--surface-2)]"
-                        >
-                          <Icon className="size-3.5 shrink-0 text-[var(--text-subtle)] transition-colors group-hover:text-[var(--signal)]" />
-                          <span className="text-[13px] text-[var(--text-muted)] transition-colors group-hover:text-[var(--text)]">
-                            {tool.name}
-                          </span>
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            ))}
+          {/*
+           * Capped to the space below the header and scrolled if it overflows.
+           * The PDF category alone is 25 tools, which ran off the bottom of a
+           * laptop screen with no way to reach the last group.
+           */}
+          <div className="scrollbar-thin max-h-[calc(100vh-8rem)] overflow-y-auto">
+            <div className="grid gap-x-5 gap-y-4 p-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {groups.map(({ group, tools }) => (
+                <div key={group} className="break-inside-avoid">
+                  <h3 className="eyebrow mb-1.5">{group}</h3>
+                  <ul className="flex flex-col">
+                    {tools.map((tool) => {
+                      const Icon = tool.icon;
+                      return (
+                        <li key={tool.id}>
+                          <Link
+                            href={toolPath(tool)}
+                            onClick={onNavigate}
+                            className="group -mx-2 flex items-center gap-2 rounded-[var(--radius-sm)] px-2 py-1 transition-colors hover:bg-[var(--surface-2)]"
+                          >
+                            <Icon className="size-3.5 shrink-0 text-[var(--text-subtle)] transition-colors group-hover:text-[var(--signal)]" />
+                            <span className="truncate text-xs text-[var(--text-muted)] transition-colors group-hover:text-[var(--text)]">
+                              {tool.name}
+                            </span>
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -181,7 +206,7 @@ function MobileMenu({ onNavigate }: { onNavigate: () => void }) {
   const [expanded, setExpanded] = useState<ToolCategory | null>('pdf');
 
   return (
-    <div className="fixed inset-x-0 bottom-0 top-16 z-50 overflow-y-auto overscroll-contain bg-[var(--bg)] lg:hidden">
+    <div className="fixed inset-x-0 bottom-0 top-14 z-50 overflow-y-auto overscroll-contain bg-[var(--bg)] lg:hidden">
       <div className="shell flex flex-col gap-5 py-5 pb-24">
         <ToolSearch size="compact" />
 

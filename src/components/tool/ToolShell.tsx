@@ -27,7 +27,7 @@ export default function ToolShell({ tool, children, steps, faq, privacyNote }: T
   const Icon = tool.icon;
 
   return (
-    <div className="shell py-8 md:py-12">
+    <div className="shell py-6 md:py-9">
       {/* Structured data is generated from what the page actually shows. */}
       <script
         type="application/ld+json"
@@ -64,14 +64,14 @@ export default function ToolShell({ tool, children, steps, faq, privacyNote }: T
       </nav>
 
       {/* ------------------------------------------------------------ header */}
-      <header className="mb-8 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+      <header className="mb-6 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div className="flex gap-4">
-          <span className="grid size-12 shrink-0 place-items-center rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] text-[var(--signal)] shadow-[var(--shadow-card)]">
-            <Icon className="size-6" />
+          <span className="grid size-10 shrink-0 place-items-center rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] text-[var(--signal)] shadow-[var(--shadow-card)]">
+            <Icon className="size-5" />
           </span>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{tool.name}</h1>
-            <p className="mt-1 max-w-2xl text-[15px] text-[var(--text-muted)]">{tool.description}</p>
+            <h1 className="text-xl font-bold tracking-tight sm:text-2xl">{tool.name}</h1>
+            <p className="mt-1 max-w-2xl text-sm text-[var(--text-muted)]">{tool.description}</p>
           </div>
         </div>
         <div className="shrink-0 md:pt-2">
@@ -79,9 +79,9 @@ export default function ToolShell({ tool, children, steps, faq, privacyNote }: T
         </div>
       </header>
 
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_300px]">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_260px]">
         <div className="min-w-0">
-          <section className="panel p-4 shadow-[var(--shadow-card)] sm:p-6">{children}</section>
+          <section className="panel p-4 shadow-[var(--shadow-card)] sm:p-5">{children}</section>
 
           {/* ------------------------------------------------------ how it works */}
           {steps && steps.length > 0 && (

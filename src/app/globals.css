@@ -113,6 +113,14 @@
   }
 
   html {
+    /*
+     * 93.75% of the reader's base size, so every rem-based size — type and
+     * spacing alike — steps down together. At a typical 16px default this is
+     * 15px, which stops the UI feeling zoomed on the 125–150% display scaling
+     * most Windows laptops ship with. Expressed as a percentage rather than a
+     * pixel value so a reader who has raised their browser font size keeps it.
+     */
+    font-size: 93.75%;
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
   }

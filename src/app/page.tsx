@@ -21,24 +21,24 @@ export default function Home() {
       <section className="relative overflow-hidden border-b border-[var(--border)]">
         <div className="blueprint pointer-events-none absolute inset-0" aria-hidden />
 
-        <div className="shell relative py-16 md:py-24">
+        <div className="shell relative py-12 md:py-16">
           <div className="mx-auto max-w-2xl text-center">
-            <div className="animate-rise mb-6 flex justify-center">
+            <div className="animate-rise mb-5 flex justify-center">
               <UplinkMeter />
             </div>
 
-            <h1 className="animate-rise font-display text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl md:text-[3.5rem]">
+            <h1 className="animate-rise font-display text-3xl font-bold leading-[1.1] tracking-tight sm:text-4xl md:text-[2.75rem]">
               {TOOLS.length} tools that run on
               <br />
               your machine, not ours.
             </h1>
 
-            <p className="animate-rise mx-auto mt-5 max-w-xl text-base leading-relaxed text-[var(--text-muted)] md:text-lg">
+            <p className="animate-rise mx-auto mt-4 max-w-lg text-sm leading-relaxed text-[var(--text-muted)] md:text-base">
               PDFs, images, text and code utilities. Your files are opened by your own browser and
               never uploaded — which is why the counter above reads zero.
             </p>
 
-            <div className="animate-rise mx-auto mt-8 max-w-xl">
+            <div className="animate-rise mx-auto mt-6 max-w-lg">
               <ToolSearch />
             </div>
 
@@ -59,18 +59,18 @@ export default function Home() {
       </section>
 
       {/* ------------------------------------------------------- categories */}
-      <div className="shell py-12 md:py-16">
-        <div className="flex flex-col gap-14">
+      <div className="shell py-10 md:py-12">
+        <div className="flex flex-col gap-10">
           {CATEGORIES.map((category) => {
             const groups = getGroupedTools(category.id);
             const count = groups.reduce((total, group) => total + group.tools.length, 0);
 
             return (
               <section key={category.id} id={category.id} className="scroll-mt-20">
-                <div className="mb-5 flex flex-wrap items-end justify-between gap-3 border-b border-[var(--border)] pb-3">
+                <div className="mb-4 flex flex-wrap items-end justify-between gap-3 border-b border-[var(--border)] pb-2.5">
                   <div>
                     <div className="flex items-baseline gap-3">
-                      <h2 className="font-display text-2xl font-bold tracking-tight">
+                      <h2 className="font-display text-xl font-bold tracking-tight">
                         {category.label}
                       </h2>
                       {/* The count is real information: how much is in this section. */}
@@ -90,10 +90,10 @@ export default function Home() {
                   </Link>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4">
                   {groups
                     .flatMap((group) => group.tools)
-                    .slice(0, 10)
+                    .slice(0, 8)
                     .map((tool) => (
                       <ToolCard key={tool.id} tool={tool} />
                     ))}

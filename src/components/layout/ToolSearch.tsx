@@ -7,7 +7,7 @@ import { CornerDownLeft, Search, X } from 'lucide-react';
 import { POPULAR_TOOLS, searchTools, toolPath, TOOLS } from '@/lib/tools/registry';
 
 /**
- * Search is the primary way into 55 tools, so it is the hero on the homepage and
+ * Search is the primary way into the catalogue, so it is the hero on the homepage and
  * is reachable from anywhere with "/". Results are computed locally — the whole
  * registry is already in the bundle, so there is nothing to ask a server for.
  */
@@ -93,8 +93,8 @@ export default function ToolSearch({
     <div ref={containerRef} className="relative w-full">
       <div className="relative">
         <Search
-          className={`pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-subtle)] ${
-            large ? 'size-5' : 'size-4'
+          className={`pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-subtle)] ${
+            large ? 'size-4' : 'size-3.5'
           }`}
         />
         <input
@@ -108,13 +108,13 @@ export default function ToolSearch({
           }}
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
-          placeholder={large ? 'Search 55 tools — try “merge pdf” or “json”' : 'Search tools'}
+          placeholder={large ? `Search ${TOOLS.length} tools — try “merge pdf” or “compress”` : 'Search tools'}
           aria-label="Search tools"
           aria-expanded={open}
           role="combobox"
           aria-controls="tool-search-results"
           className={`w-full rounded-full border border-[var(--border-strong)] bg-[var(--surface)] text-[var(--text)] shadow-[var(--shadow-card)] transition-colors placeholder:text-[var(--text-subtle)] focus:border-[var(--signal)] focus:outline-none [&::-webkit-search-cancel-button]:hidden ${
-            large ? 'py-4 pl-12 pr-24 text-base' : 'py-2 pl-10 pr-4 text-sm'
+            large ? 'py-3 pl-11 pr-20 text-sm' : 'py-1.5 pl-9 pr-3 text-[13px]'
           }`}
         />
         {query ? (

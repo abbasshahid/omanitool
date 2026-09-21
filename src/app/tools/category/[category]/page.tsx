@@ -49,7 +49,7 @@ export default async function CategoryPage({
   const count = groups.reduce((total, group) => total + group.tools.length, 0);
 
   return (
-    <div className="shell py-8 md:py-12">
+    <div className="shell py-6 md:py-10">
       <nav aria-label="Breadcrumb" className="mb-6">
         <ol className="flex items-center gap-1 font-mono text-xs text-[var(--text-subtle)]">
           <li>
@@ -66,7 +66,7 @@ export default async function CategoryPage({
 
       <header className="mb-8 max-w-2xl">
         <div className="flex items-baseline gap-3">
-          <h1 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">
+          <h1 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
             {meta.label} tools
           </h1>
           <span className="font-mono text-xs text-[var(--text-subtle)]">
@@ -80,11 +80,11 @@ export default async function CategoryPage({
         <ToolSearch size="compact" />
       </div>
 
-      <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-8">
         {groups.map(({ group, tools }) => (
           <section key={group}>
             <h2 className="eyebrow mb-4 border-b border-[var(--border)] pb-2">{group}</h2>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4">
               {tools.map((tool) => (
                 <ToolCard key={tool.id} tool={tool} />
               ))}
