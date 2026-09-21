@@ -30,7 +30,13 @@ export default function ToolSearch({
     return (query.trim() ? found : POPULAR_TOOLS).slice(0, 7);
   }, [query]);
 
-  useEffect(() => setActive(0), [query]);
+  // A new query means the previous highlight is meaningless; reset it during
+  // render so the first result is never briefly highlighted at the wrong index.
+  const [activeForQuery, setActiveForQuery] = useState(query);
+  if (activeForQuery !== query) {
+    setActiveForQuery(query);
+    setActive(0);
+  }
 
   // "/" focuses search from anywhere, the way most developer tools behave.
   useEffect(() => {

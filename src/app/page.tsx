@@ -1,102 +1,113 @@
-import { constructMetadata } from '@/lib/seo';
-import { TOOLS, getToolsByCategory } from '@/lib/toolsConfig';
-import ToolCard from '@/components/ui/ToolCard';
-import AdSenseBanner from '@/components/ads/AdSenseBanner';
-import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
+import { constructMetadata } from '@/lib/seo';
+import { CATEGORIES, getGroupedTools, POPULAR_TOOLS, TOOLS } from '@/lib/tools/registry';
+import ToolCard from '@/components/ui/ToolCard';
+import ToolSearch from '@/components/layout/ToolSearch';
+import UplinkMeter from '@/components/layout/UplinkMeter';
+import AdSenseBanner from '@/components/ads/AdSenseBanner';
 
 export const metadata = constructMetadata({
-  title: 'OmniTool - Free All-in-One Online PDF, Image & AI Tools Hub',
-  description: 'Access 40+ free online tools for PDF editing, image processing, background removal, and AI-powered content generation. Secure, fast, and no installation required.',
+  title: `OmniTool — ${TOOLS.length} free file tools that run in your browser`,
+  description:
+    'Merge PDFs, convert images, format JSON and more. Every tool runs on your own machine, so your files are never uploaded. Free, no account, no limits.',
   canonical: '/',
 });
 
 export default function Home() {
-  const imageTools = getToolsByCategory('image');
-  const aiTools = getToolsByCategory('ai').slice(0, 3); // Preview top 3 AI tools
-  const pdfTools = getToolsByCategory('pdf');
-
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
-      <section className="relative py-12 md:py-20 lg:py-32 overflow-hidden border-b border-[var(--color-border-base)]">
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5" />
-        <div className="container mx-auto max-w-7xl px-4 xl:px-8 relative z-10 text-center">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[var(--color-text-main)] mb-6 leading-tight">
-            Your All-in-One <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-600">Digital Toolbox</span>
-          </h1>
-          <p className="text-base sm:text-lg md:text-xl text-[var(--color-text-muted)] max-w-2xl mx-auto mb-10 px-4">
-            Empowering your workflow with simple, powerful online tools. Remove backgrounds, convert formats, and leverage AI instantly.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4 px-6 md:px-0">
-            <Link href="#tools" className="btn-primary text-base px-8 py-4">
-              Explore Tools
-            </Link>
-            <Link href="/ai-hub" className="btn-secondary text-base px-8 py-4">
-              Discover AI Hub
-            </Link>
+    <>
+      {/* ------------------------------------------------------------- hero */}
+      <section className="relative overflow-hidden border-b border-[var(--border)]">
+        <div className="blueprint pointer-events-none absolute inset-0" aria-hidden />
+
+        <div className="shell relative py-16 md:py-24">
+          <div className="mx-auto max-w-2xl text-center">
+            <div className="animate-rise mb-6 flex justify-center">
+              <UplinkMeter />
+            </div>
+
+            <h1 className="animate-rise font-display text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl md:text-[3.5rem]">
+              {TOOLS.length} tools that run on
+              <br />
+              your machine, not ours.
+            </h1>
+
+            <p className="animate-rise mx-auto mt-5 max-w-xl text-base leading-relaxed text-[var(--text-muted)] md:text-lg">
+              PDFs, images, text and code utilities. Your files are opened by your own browser and
+              never uploaded — which is why the counter above reads zero.
+            </p>
+
+            <div className="animate-rise mx-auto mt-8 max-w-xl">
+              <ToolSearch />
+            </div>
+
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-sm">
+              <span className="text-[var(--text-subtle)]">Popular:</span>
+              {POPULAR_TOOLS.slice(0, 5).map((tool) => (
+                <Link
+                  key={tool.id}
+                  href={`/tools/${tool.id}`}
+                  className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1 text-[13px] text-[var(--text-muted)] transition-colors hover:border-[var(--signal)] hover:text-[var(--text)]"
+                >
+                  {tool.name}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Top AdSense Banner */}
-      <div className="container mx-auto max-w-7xl px-4 xl:px-8 py-8">
-        <AdSenseBanner dataAdSlot="HOMEPAGE_TOP_LEADERBOARD" className="h-[90px] bg-slate-50 dark:bg-slate-900/50 rounded-xl" />
-      </div>
+      {/* ------------------------------------------------------- categories */}
+      <div className="shell py-12 md:py-16">
+        <div className="flex flex-col gap-14">
+          {CATEGORIES.map((category) => {
+            const groups = getGroupedTools(category.id);
+            const count = groups.reduce((total, group) => total + group.tools.length, 0);
 
-      <div id="tools" className="container mx-auto max-w-7xl px-4 xl:px-8 py-12 md:py-20 flex flex-col gap-20">
-        
-        {/* Massive Document Suite Section - Shows 2 rows (8 tools) */}
-        <section>
-          <div className="flex items-center justify-between mb-8 group">
-            <div>
-              <h2 className="text-3xl font-bold text-[var(--color-text-main)] mb-2">
-                Complete <span className="text-red-500">Document</span> Toolkit
-              </h2>
-              <p className="text-[var(--color-text-muted)] text-lg">Everything you need to modify, convert, and manage your documents and images.</p>
-            </div>
-            <Link href="/tools/pdf" className="flex items-center gap-2 text-red-500 hover:text-red-400 font-medium whitespace-nowrap">
-              View all Document tools
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
-            {pdfTools.slice(0, 8).map((tool) => (
-              <ToolCard key={tool.id} tool={tool} />
-            ))}
-          </div>
-        </section>
+            return (
+              <section key={category.id} id={category.id} className="scroll-mt-20">
+                <div className="mb-5 flex flex-wrap items-end justify-between gap-3 border-b border-[var(--border)] pb-3">
+                  <div>
+                    <div className="flex items-baseline gap-3">
+                      <h2 className="font-display text-2xl font-bold tracking-tight">
+                        {category.label}
+                      </h2>
+                      {/* The count is real information: how much is in this section. */}
+                      <span className="font-mono text-xs text-[var(--text-subtle)]">
+                        {String(count).padStart(2, '0')} tools
+                      </span>
+                    </div>
+                    <p className="mt-1 text-sm text-[var(--text-muted)]">{category.blurb}</p>
+                  </div>
 
-        {/* AI Hub Preview Section */}
-        <section className="rounded-3xl bg-[var(--color-surface-base)] border border-[var(--color-border-base)] p-8 md:p-12">
-          <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
-            <div>
-              <h2 className="text-3xl font-bold text-[var(--color-text-main)] mb-2 flex items-center gap-3">
-                Next-Gen AI Tools Hub
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-900 text-purple-200">
-                  Update
-                </span>
-              </h2>
-              <p className="text-[var(--color-text-muted)] text-lg">Unlock your creative potential with our suite of powerful AI-driven utilities.</p>
-            </div>
-            <Link href="/ai-hub" className="group flex items-center gap-2 text-indigo-500 hover:text-indigo-400 font-medium whitespace-nowrap">
-              View all AI tools
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {aiTools.map((tool) => (
-              <ToolCard key={tool.id} tool={tool} />
-            ))}
-          </div>
-        </section>
+                  <Link
+                    href={`/tools/category/${category.id}`}
+                    className="group inline-flex shrink-0 items-center gap-1.5 text-sm font-medium text-[var(--signal)]"
+                  >
+                    Browse all
+                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+                  </Link>
+                </div>
 
-        {/* AdSense Banner Moved to Bottom */}
-        <div className="py-4">
-          <AdSenseBanner dataAdSlot="HOMEPAGE_MID_BANNER" className="h-[250px] bg-slate-50 dark:bg-slate-900/50 rounded-xl" />
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                  {groups
+                    .flatMap((group) => group.tools)
+                    .slice(0, 10)
+                    .map((tool) => (
+                      <ToolCard key={tool.id} tool={tool} />
+                    ))}
+                </div>
+              </section>
+            );
+          })}
         </div>
 
+        <AdSenseBanner
+          dataAdSlot="HOMEPAGE_FOOTER"
+          className="mt-16 h-[250px] rounded-[var(--radius-lg)] border border-dashed border-[var(--border)]"
+        />
       </div>
-    </div>
+    </>
   );
 }

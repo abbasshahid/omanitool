@@ -1,64 +1,129 @@
 'use client';
 
 import Link from 'next/link';
+import { CATEGORIES, POPULAR_TOOLS, toolPath, TOOLS } from '@/lib/tools/registry';
 
 export default function Footer() {
   return (
-    <footer className="border-t border-[var(--color-border-base)] bg-[var(--color-surface-base)] py-12">
-      <div className="container mx-auto max-w-7xl px-4 xl:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-          <div className="col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+    <footer className="mt-20 border-t border-[var(--border)] bg-[var(--surface)]">
+      <div className="shell py-12">
+        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+          <div>
+            <Link href="/" className="mb-3 flex items-center gap-2">
+              <span className="grid size-7 place-items-center rounded-[var(--radius-sm)] bg-[var(--text)]">
+                <svg viewBox="0 0 16 16" className="size-3.5" aria-hidden>
+                  <rect x="1" y="1" width="6" height="6" rx="1.5" fill="var(--signal)" />
+                  <rect x="9" y="1" width="6" height="6" rx="1.5" fill="var(--bg)" opacity="0.55" />
+                  <rect x="1" y="9" width="6" height="6" rx="1.5" fill="var(--bg)" opacity="0.55" />
+                  <rect x="9" y="9" width="6" height="6" rx="1.5" fill="var(--bg)" opacity="0.85" />
                 </svg>
-              </div>
-              <span className="text-xl font-bold tracking-tight">OmniTool</span>
+              </span>
+              <span className="font-display text-base font-bold">OmniTool</span>
             </Link>
-            <p className="text-[var(--color-text-muted)] text-sm max-w-sm mb-6">
-              Empowering your workflow with simple, powerful online tools. From image processing to format conversion and AI assistance.
+            <p className="max-w-xs text-sm leading-relaxed text-[var(--text-muted)]">
+              {TOOLS.length} tools for files, images and text. Every one of them runs in your
+              browser, so your files stay on your machine.
             </p>
           </div>
-          
+
           <div>
-            <h3 className="font-semibold text-[var(--color-text-main)] mb-4">Product</h3>
-            <ul className="space-y-3">
-              <li><Link href="/" className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors">All Tools</Link></li>
-              <li><Link href="/ai-hub" className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors">AI Hub</Link></li>
-              <li><Link href="/donate" className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors">Donation</Link></li>
+            <h3 className="eyebrow mb-3">Categories</h3>
+            <ul className="flex flex-col gap-2">
+              {CATEGORIES.map((category) => (
+                <li key={category.id}>
+                  <Link
+                    href={`/tools/category/${category.id}`}
+                    className="text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--text)]"
+                  >
+                    {category.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
-          
+
           <div>
-            <h3 className="font-semibold text-[var(--color-text-main)] mb-4">Support</h3>
-            <ul className="space-y-3">
-              <li><a href="mailto:admin@omanitool.tech" className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors">Contact Us</a></li>
-              <li><Link href="/privacy" className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors">Privacy Policy</Link></li>
-              <li><Link href="/terms" className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors">Terms of Service</Link></li>
+            <h3 className="eyebrow mb-3">Most used</h3>
+            <ul className="flex flex-col gap-2">
+              {POPULAR_TOOLS.slice(0, 6).map((tool) => (
+                <li key={tool.id}>
+                  <Link
+                    href={toolPath(tool)}
+                    className="text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--text)]"
+                  >
+                    {tool.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="eyebrow mb-3">About</h3>
+            <ul className="flex flex-col gap-2">
               <li>
-                <button 
+                <Link
+                  href="/blog"
+                  className="text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--text)]"
+                >
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/donate"
+                  className="text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--text)]"
+                >
+                  Donate
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="mailto:admin@omanitool.tech"
+                  className="text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--text)]"
+                >
+                  Contact
+                </a>
+              </li>
+              <li>
+                <Link
+                  href="/privacy"
+                  className="text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--text)]"
+                >
+                  Privacy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/terms"
+                  className="text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--text)]"
+                >
+                  Terms
+                </Link>
+              </li>
+              <li>
+                <button
+                  type="button"
                   onClick={() => {
                     localStorage.removeItem('omnitool-gdpr-consent');
                     window.location.reload();
                   }}
-                  className="text-[var(--color-text-muted)] hover:text-indigo-400 text-sm transition-colors text-left"
+                  className="text-left text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--text)]"
                 >
-                  Consent Settings
+                  Cookie settings
                 </button>
               </li>
             </ul>
           </div>
         </div>
-        
-        <div className="border-t border-[var(--color-border-base)] pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-[var(--color-text-muted)] text-sm">
-            &copy; {new Date().getFullYear()} OmniTool Platform. All rights reserved.
+
+        <div className="mt-10 flex flex-col gap-3 border-t border-[var(--border)] pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="font-mono text-xs text-[var(--text-subtle)]">
+            © {new Date().getFullYear()} OmniTool
           </p>
-          <div className="flex gap-4">
-            <span className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:text-white cursor-pointer transition-colors"><svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" /></svg></span>
-            <span className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:text-white cursor-pointer transition-colors"><svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg></span>
-          </div>
+          <p className="font-mono text-xs text-[var(--text-subtle)]">
+            No accounts · No uploads · No tracking of your files
+          </p>
         </div>
       </div>
     </footer>

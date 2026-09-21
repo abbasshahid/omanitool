@@ -5,7 +5,6 @@ import FileUploader from '@/components/shared/FileUploader';
 import AdSenseBanner from '@/components/ads/AdSenseBanner';
 import { getToolById } from '@/lib/toolsConfig';
 import { RefreshCw, Download, ArrowRight, FileText, ChevronLeft, Shield, Zap } from 'lucide-react';
-import ApryseWebViewer from '@/components/shared/ApryseWebViewer';
 import MozillaPDFViewer from '@/components/shared/MozillaPDFViewer';
 
 export default function EditPDFClient() {
@@ -13,7 +12,6 @@ export default function EditPDFClient() {
   const [file, setFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isDone, setIsDone] = useState(false);
-  const [editorType, setEditorType] = useState<'mozilla' | 'apryse'>('mozilla');
 
   const handleFileSelect = (selectedFile: File) => {
     setFile(selectedFile);
@@ -76,46 +74,15 @@ export default function EditPDFClient() {
                       <p className="text-xs text-[var(--color-text-muted)]">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
                     </div>
                   </div>
-
-                  <div className="flex items-center bg-[var(--color-background-base)] p-1 rounded-lg border border-[var(--color-border-base)] shadow-sm">
-                    <button
-                      onClick={() => setEditorType('mozilla')}
-                      className={`flex items-center gap-2 px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                        editorType === 'mozilla' 
-                          ? 'bg-indigo-600 text-white shadow-md' 
-                          : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-main)]'
-                      }`}
-                    >
-                      <Shield className="w-3.5 h-3.5" />
-                      Standard (Free)
-                    </button>
-                    <button
-                      onClick={() => setEditorType('apryse')}
-                      className={`flex items-center gap-2 px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                        editorType === 'apryse' 
-                          ? 'bg-indigo-600 text-white shadow-md' 
-                          : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-main)]'
-                      }`}
-                    >
-                      <Zap className="w-3.5 h-3.5" />
-                      Professional (Trial)
-                    </button>
-                  </div>
                 </div>
 
                 <div className="h-[800px] w-full bg-[var(--color-background-base)] rounded-xl overflow-hidden shadow-2xl border border-[var(--color-border-base)] relative">
-                  {editorType === 'mozilla' ? (
-                    <MozillaPDFViewer file={file} />
-                  ) : (
-                    <ApryseWebViewer file={file} />
-                  )}
-                  
-                  {editorType === 'mozilla' && (
-                    <div className="absolute bottom-4 left-4 right-4 bg-indigo-600/90 backdrop-blur-sm text-white px-4 py-2 rounded-lg text-xs font-medium flex items-center justify-between shadow-lg pointer-events-none md:pointer-events-auto">
-                      <span>Using Google Chrome / Mozilla PDF Engine (No Watermark)</span>
-                      <span className="opacity-70">Free Edition</span>
-                    </div>
-                  )}
+                  <MozillaPDFViewer file={file} />
+
+                  <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between rounded-lg bg-[var(--surface)]/90 px-4 py-2 text-xs font-medium shadow-lg backdrop-blur-sm">
+                    <span>Viewing with the built-in PDF engine</span>
+                    <span className="opacity-70">No watermark</span>
+                  </div>
                 </div>
               </div>
             )}

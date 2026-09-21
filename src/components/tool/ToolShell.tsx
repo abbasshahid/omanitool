@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ChevronRight, ShieldCheck } from 'lucide-react';
 import { getCategory, getRelatedTools, toolPath, type Tool } from '@/lib/tools/registry';
+import { generateFaqSchema, generateSoftwareSchema } from '@/lib/seo';
 import UplinkMeter from '@/components/layout/UplinkMeter';
 import AdSenseBanner from '@/components/ads/AdSenseBanner';
 
@@ -27,6 +28,20 @@ export default function ToolShell({ tool, children, steps, faq, privacyNote }: T
 
   return (
     <div className="shell py-8 md:py-12">
+      {/* Structured data is generated from what the page actually shows. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(generateSoftwareSchema({ ...tool, path: toolPath(tool) })),
+        }}
+      />
+      {faq && faq.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(generateFaqSchema(faq)) }}
+        />
+      )}
+
       {/* ------------------------------------------------------- breadcrumb */}
       <nav aria-label="Breadcrumb" className="mb-6">
         <ol className="flex flex-wrap items-center gap-1 font-mono text-xs text-[var(--text-subtle)]">

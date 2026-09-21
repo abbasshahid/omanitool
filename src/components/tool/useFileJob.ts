@@ -91,8 +91,14 @@ export function useFileJob<TOptions extends object>({
   const [outputs, setOutputs] = useState<JobOutput[]>([]);
 
   const abortRef = useRef<AbortController | null>(null);
+
+  // `run` is an inline closure in every tool, so it has a new identity each
+  // render. Holding it in a ref keeps `start` stable without going stale: the
+  // ref is refreshed after each commit, and `start` only fires from an event.
   const runRef = useRef(run);
-  runRef.current = run;
+  useEffect(() => {
+    runRef.current = run;
+  });
 
   // Object URLs for finished outputs are owned here, so nothing leaks on reset.
   const urlsRef = useRef<string[]>([]);

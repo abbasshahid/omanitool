@@ -1,7 +1,14 @@
 import { NextResponse } from 'next/server';
-import { stripe } from '@/lib/stripe';
+import { getStripe, isStripeConfigured } from '@/lib/stripe';
 
 export async function POST(request: Request) {
+  if (!isStripeConfigured()) {
+    return NextResponse.json(
+      { error: 'Donations are not set up on this deployment yet.' },
+      { status: 503 },
+    );
+  }
+
   try {
     const { amount, name, email } = await request.json();
 
@@ -12,7 +19,7 @@ export async function POST(request: Request) {
     const origin = request.headers.get('origin');
 
     // Create Checkout Sessions from body params.
-    const session = await stripe.checkout.sessions.create({
+    const session = await getStripe().checkout.sessions.create({
       line_items: [
         {
           price_data: {

@@ -1,30 +1,50 @@
-import { getToolById } from '@/lib/toolsConfig';
-import { constructMetadata, generateSoftwareSchema } from '@/lib/seo';
-import AdobeConverterClient from '@/components/tools/AdobeConverterClient';
-import { Metadata } from 'next';
+import { getTool, toolPath } from '@/lib/tools/registry';
+import { constructMetadata } from '@/lib/seo';
+import ToolShell from '@/components/tool/ToolShell';
+import WordToPdfClient from '@/components/tools/WordToPdfClient';
 
-export async function generateMetadata(): Promise<Metadata> {
-  const tool = getToolById('word-to-pdf');
-  return constructMetadata({
-    title: `${tool?.name} Online - Convert DOC and DOCX to PDF for Free | OmniTool`,
-    description: tool?.description || 'Convert Microsoft Word documents to PDF online for free. High-quality conversion via Adobe PDF Services. Secure and fast.',
-    canonical: tool?.path,
-  });
-}
+const tool = getTool('word-to-pdf')!;
 
-export default function WordToPDFPage() {
-  const tool = getToolById('word-to-pdf');
-  const schema = tool ? generateSoftwareSchema(tool) : null;
+export const metadata = constructMetadata({
+  title: 'Word to PDF — convert .docx in your browser, free | OmniTool',
+  description:
+    'Convert Word documents to PDF without uploading them. Headings, lists and tables are kept, and the text stays selectable. Free, no sign-up.',
+  canonical: toolPath(tool),
+});
 
+export default function WordToPdfPage() {
   return (
-    <>
-      {schema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      )}
-      <AdobeConverterClient toolId="word-to-pdf" />
-    </>
+    <ToolShell
+      tool={tool}
+      steps={[
+        'Drop one or more .docx files onto the box above.',
+        'Choose the page size, orientation and margin you want.',
+        'Select Convert to PDF, then save the result.',
+      ]}
+      faq={[
+        {
+          question: 'Are my documents uploaded anywhere?',
+          answer:
+            'No. The conversion runs entirely in your browser, so the file never leaves your machine. The byte counter at the top of the page measures exactly this.',
+        },
+        {
+          question: 'Can it convert old .doc files?',
+          answer:
+            'Only .docx. The older .doc format is binary with no practical browser-side reader. Open it in Word or LibreOffice and save it as .docx first.',
+        },
+        {
+          question: 'Will the PDF look exactly like the Word document?',
+          answer:
+            'Not exactly. Text, headings, lists, bold and italic, and tables are reproduced, and the text stays selectable and searchable. Images, precise positioning and unusual fonts are not carried over.',
+        },
+        {
+          question: 'Is there a file size limit?',
+          answer:
+            'No account limits. The practical ceiling is your browser memory — files up to about 200 MB are accepted, and you can convert several at once.',
+        },
+      ]}
+    >
+      <WordToPdfClient />
+    </ToolShell>
   );
 }

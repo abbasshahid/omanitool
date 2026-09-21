@@ -74,6 +74,13 @@ export interface Tool {
   isPopular?: boolean;
   /** True when the tool needs a server round trip. Everything else is local. */
   usesNetwork?: boolean;
+  /**
+   * 'planned' means the entry is specified but `src/app/tools/{id}` does not
+   * exist yet. Planned tools are kept out of every listing so the site never
+   * links to a 404 — see the guard in registry.test.ts. Drop this field as each
+   * page lands.
+   */
+  status?: 'live' | 'planned';
 }
 
 export const CATEGORIES: {
@@ -114,7 +121,7 @@ export const CATEGORIES: {
   },
 ];
 
-export const TOOLS: Tool[] = [
+const CATALOGUE: Tool[] = [
   // ---------------------------------------------------------------- PDF · Organize
   {
     id: 'pdf-merger',
@@ -410,6 +417,7 @@ export const TOOLS: Tool[] = [
   // ------------------------------------------------------------------------ Image
   {
     id: 'image-converter',
+    status: 'planned',
     name: 'Image Converter',
     tagline: 'Convert between PNG, JPG, WebP and AVIF.',
     description:
@@ -445,6 +453,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'image-cropper',
+    status: 'planned',
     name: 'Image Cropper',
     tagline: 'Crop to a shape or a fixed ratio.',
     description:
@@ -469,6 +478,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'exif-viewer',
+    status: 'planned',
     name: 'EXIF Viewer & Stripper',
     tagline: 'See hidden photo metadata, then remove it.',
     description:
@@ -481,6 +491,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'favicon-generator',
+    status: 'planned',
     name: 'Favicon Generator',
     tagline: 'Make every icon size a site needs.',
     description:
@@ -493,6 +504,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'color-palette',
+    status: 'planned',
     name: 'Color Palette Extractor',
     tagline: 'Pull the dominant colors from an image.',
     description:
@@ -505,6 +517,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'image-to-base64',
+    status: 'planned',
     name: 'Image to Base64',
     tagline: 'Encode an image as a data URI.',
     description:
@@ -519,6 +532,7 @@ export const TOOLS: Tool[] = [
   // ------------------------------------------------------------------------- Text
   {
     id: 'word-counter',
+    status: 'planned',
     name: 'Word Counter',
     tagline: 'Count words, characters and reading time.',
     description:
@@ -531,6 +545,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'case-converter',
+    status: 'planned',
     name: 'Case Converter',
     tagline: 'Switch between naming conventions.',
     description:
@@ -543,6 +558,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'markdown-editor',
+    status: 'planned',
     name: 'Markdown Editor',
     tagline: 'Write Markdown, preview it, export a PDF.',
     description:
@@ -555,6 +571,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'lorem-ipsum',
+    status: 'planned',
     name: 'Lorem Ipsum Generator',
     tagline: 'Generate placeholder text.',
     description:
@@ -567,6 +584,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'csv-json',
+    status: 'planned',
     name: 'CSV to JSON',
     tagline: 'Convert tabular data both ways.',
     description:
@@ -579,6 +597,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'text-cleaner',
+    status: 'planned',
     name: 'Text Cleaner',
     tagline: 'Tidy up messy pasted text.',
     description:
@@ -593,6 +612,7 @@ export const TOOLS: Tool[] = [
   // -------------------------------------------------------------------- Developer
   {
     id: 'json-formatter',
+    status: 'planned',
     name: 'JSON Formatter',
     tagline: 'Format, validate and minify JSON.',
     description:
@@ -606,6 +626,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'base64',
+    status: 'planned',
     name: 'Base64 Encoder',
     tagline: 'Encode and decode Base64.',
     description:
@@ -618,6 +639,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'jwt-decoder',
+    status: 'planned',
     name: 'JWT Decoder',
     tagline: 'Read the claims inside a token.',
     description:
@@ -630,6 +652,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'hash-generator',
+    status: 'planned',
     name: 'Hash Generator',
     tagline: 'SHA-1, SHA-256, SHA-384 and SHA-512.',
     description:
@@ -642,6 +665,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'uuid-generator',
+    status: 'planned',
     name: 'UUID Generator',
     tagline: 'Generate random identifiers in bulk.',
     description:
@@ -654,6 +678,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'url-encoder',
+    status: 'planned',
     name: 'URL Encoder',
     tagline: 'Percent-encode URLs and query strings.',
     description:
@@ -666,6 +691,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'regex-tester',
+    status: 'planned',
     name: 'Regex Tester',
     tagline: 'Test a pattern against real text.',
     description:
@@ -678,6 +704,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'timestamp-converter',
+    status: 'planned',
     name: 'Timestamp Converter',
     tagline: 'Unix time to dates and back.',
     description:
@@ -690,6 +717,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'text-diff',
+    status: 'planned',
     name: 'Text Diff',
     tagline: 'Compare two blocks of text.',
     description:
@@ -704,6 +732,7 @@ export const TOOLS: Tool[] = [
   // -------------------------------------------------------------------- Generate
   {
     id: 'qr-code',
+    status: 'planned',
     name: 'QR Code Generator',
     tagline: 'Make a QR code for anything.',
     description:
@@ -717,6 +746,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'barcode',
+    status: 'planned',
     name: 'Barcode Generator',
     tagline: 'EAN, UPC, Code 128 and more.',
     description:
@@ -729,6 +759,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'password-generator',
+    status: 'planned',
     name: 'Password Generator',
     tagline: 'Strong passwords and passphrases.',
     description:
@@ -741,6 +772,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'screen-recorder',
+    status: 'planned',
     name: 'Screen Recorder',
     tagline: 'Record your screen or webcam.',
     description:
@@ -753,6 +785,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'text-to-speech',
+    status: 'planned',
     name: 'Text to Speech',
     tagline: 'Read text aloud in any installed voice.',
     description:
@@ -776,6 +809,15 @@ export const TOOLS: Tool[] = [
     usesNetwork: true,
   },
 ];
+
+/** Every entry, including ones not built yet. Use it for planning, not for UI. */
+export const CATALOGUE_ALL = CATALOGUE;
+
+/**
+ * The tools the site actually lists and links to. Anything still marked
+ * 'planned' has no page, so showing it would produce a dead link.
+ */
+export const TOOLS: Tool[] = CATALOGUE.filter((tool) => tool.status !== 'planned');
 
 export const toolPath = (tool: Tool) => `/tools/${tool.id}`;
 

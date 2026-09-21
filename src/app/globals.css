@@ -181,65 +181,68 @@
    Components
 --------------------------------------------------------------------------- */
 
-@layer components {
-  .shell {
-    @apply mx-auto w-full max-w-[1200px] px-4 sm:px-6 lg:px-8;
-  }
+/*
+ * Declared with @utility rather than as plain classes in @layer components:
+ * Tailwind v4 only lets `@apply` reference real utilities, so `btn` and `field`
+ * have to be utilities for `.btn-primary { @apply btn ... }` to resolve.
+ */
+@utility shell {
+  @apply mx-auto w-full max-w-[1200px] px-4 sm:px-6 lg:px-8;
+}
 
-  /* Eyebrow: small mono label that categorises the block beneath it. */
-  .eyebrow {
-    font-family: var(--font-plex-mono), ui-monospace, monospace;
-    @apply text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--text-subtle)];
-  }
+/* Small mono label that categorises the block beneath it. */
+@utility eyebrow {
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  @apply text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--text-subtle)];
+}
 
-  .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-[var(--radius-md)] px-4 py-2.5 text-sm font-semibold transition-all duration-150 disabled:pointer-events-none disabled:opacity-45;
-  }
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-[var(--radius-md)] px-4 py-2.5 text-sm font-semibold transition-all duration-150 disabled:pointer-events-none disabled:opacity-45;
+}
 
-  .btn-primary {
-    @apply btn bg-[var(--signal)] text-[var(--signal-fg)] shadow-[var(--shadow-card)] hover:bg-[var(--signal-hover)] active:translate-y-px;
-  }
+@utility btn-primary {
+  @apply btn bg-[var(--signal)] text-[var(--signal-fg)] shadow-[var(--shadow-card)] hover:bg-[var(--signal-hover)] active:translate-y-px;
+}
 
-  .btn-secondary {
-    @apply btn border border-[var(--border-strong)] bg-[var(--surface)] text-[var(--text)] hover:border-[var(--text-subtle)] hover:bg-[var(--surface-2)] active:translate-y-px;
-  }
+@utility btn-secondary {
+  @apply btn border border-[var(--border-strong)] bg-[var(--surface)] text-[var(--text)] hover:border-[var(--text-subtle)] hover:bg-[var(--surface-2)] active:translate-y-px;
+}
 
-  .btn-ghost {
-    @apply btn text-[var(--text-muted)] hover:bg-[var(--surface-2)] hover:text-[var(--text)];
-  }
+@utility btn-ghost {
+  @apply btn text-[var(--text-muted)] hover:bg-[var(--surface-2)] hover:text-[var(--text)];
+}
 
-  .btn-danger {
-    @apply btn border border-transparent bg-[var(--alert-soft)] text-[var(--alert)] hover:border-[var(--alert)];
-  }
+@utility btn-danger {
+  @apply btn border border-transparent bg-[var(--alert-soft)] text-[var(--alert)] hover:border-[var(--alert)];
+}
 
-  .btn-lg {
-    @apply px-6 py-3.5 text-base;
-  }
+@utility btn-lg {
+  @apply px-6 py-3.5 text-base;
+}
 
-  .panel {
-    @apply rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)];
-  }
+@utility panel {
+  @apply rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)];
+}
 
-  .field {
-    @apply w-full rounded-[var(--radius-md)] border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] transition-colors placeholder:text-[var(--text-subtle)] focus:border-[var(--signal)] focus:outline-none;
-  }
+@utility field {
+  @apply w-full rounded-[var(--radius-md)] border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text)] transition-colors placeholder:text-[var(--text-subtle)] focus:border-[var(--signal)] focus:outline-none;
+}
 
-  .field-mono {
-    @apply field font-mono;
-  }
+@utility field-mono {
+  @apply field font-mono;
+}
 
-  .label {
-    @apply mb-1.5 block text-xs font-semibold text-[var(--text-muted)];
-  }
+@utility label {
+  @apply mb-1.5 block text-xs font-semibold text-[var(--text-muted)];
+}
 
-  /* Hairline grid, echoing engineering drawing paper. Sits behind the hero only. */
-  .blueprint {
-    background-image:
-      linear-gradient(to right, var(--bg-grid) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--bg-grid) 1px, transparent 1px);
-    background-size: 32px 32px;
-    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
-  }
+/* Hairline grid, echoing engineering drawing paper. Sits behind the hero only. */
+@utility blueprint {
+  background-image:
+    linear-gradient(to right, var(--bg-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--bg-grid) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
 }
 
 @layer utilities {
