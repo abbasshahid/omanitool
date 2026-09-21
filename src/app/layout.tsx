@@ -6,6 +6,8 @@ import Footer from '@/components/layout/Footer';
 import { Analytics } from '@vercel/analytics/next';
 import GDPRConsent from '@/components/ui/GDPRConsent';
 import { themeBootScript } from '@/components/layout/ThemeToggle';
+import { consentModeBootScript } from '@/lib/ads/consent';
+import AdScript from '@/components/ads/AdScript';
 import { constructMetadata } from '@/lib/seo';
 
 /**
@@ -55,11 +57,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <head>
         {/* Sets the theme class before first paint, so there is no flash. */}
         <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6605360679202138"
-          crossOrigin="anonymous"
-        />
+        {/* Consent Mode v2 defaults, set before any Google tag can run. */}
+        <script dangerouslySetInnerHTML={{ __html: consentModeBootScript }} />
       </head>
       <body
         className={`${archivo.variable} ${plexSans.variable} ${plexMono.variable} flex min-h-screen flex-col`}
@@ -76,6 +75,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         </main>
         <Footer />
         <Analytics />
+        <AdScript />
         <GDPRConsent />
       </body>
     </html>

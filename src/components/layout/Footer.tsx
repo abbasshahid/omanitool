@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { CATEGORIES, POPULAR_TOOLS, toolPath, TOOLS } from '@/lib/tools/registry';
+import { clearConsent } from '@/lib/ads/consent';
 
 export default function Footer() {
   return (
@@ -104,10 +105,7 @@ export default function Footer() {
               <li>
                 <button
                   type="button"
-                  onClick={() => {
-                    localStorage.removeItem('omnitool-gdpr-consent');
-                    window.location.reload();
-                  }}
+                  onClick={clearConsent}
                   className="text-left text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--text)]"
                 >
                   Cookie settings

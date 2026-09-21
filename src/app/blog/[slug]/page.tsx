@@ -2,7 +2,7 @@ import { getPostBySlug, getAllPosts } from '@/lib/blog';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Calendar, User, ArrowLeft } from 'lucide-react';
-import AdSenseBanner from '@/components/ads/AdSenseBanner';
+import AdSlot from '@/components/ads/AdSlot';
 import type { Metadata, ResolvingMetadata } from 'next';
 
 // Generate dynamic metadata for SEO including Open Graph tags
@@ -114,7 +114,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           {/* AdSense Top of Content */}
           <div className="mb-10 text-center float-right ml-8 mb-4 max-w-[300px]">
-             <AdSenseBanner dataAdSlot="BLOG_POST_INLINE" className="w-[300px] h-[250px] bg-slate-900/30 rounded-xl" />
+             <AdSlot placement="inArticle" />
           </div>
 
           <div 
@@ -127,7 +127,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           {/* AdSense Bottom of Content */}
           <div className="mt-16 pt-10 border-t border-[var(--color-border-base)] text-center">
-             <AdSenseBanner dataAdSlot="BLOG_POST_BOTTOM" className="h-[90px] w-full max-w-[728px] mx-auto bg-slate-900/30 rounded-xl" />
+             <AdSlot placement="footer" />
           </div>
 
         </article>

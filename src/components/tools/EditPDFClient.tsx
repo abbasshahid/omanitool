@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import FileUploader from '@/components/shared/FileUploader';
-import AdSenseBanner from '@/components/ads/AdSenseBanner';
+import AdSlot from '@/components/ads/AdSlot';
 import { getToolById } from '@/lib/toolsConfig';
 import { RefreshCw, Download, ArrowRight, FileText, ChevronLeft, Shield, Zap } from 'lucide-react';
 import MozillaPDFViewer from '@/components/shared/MozillaPDFViewer';
@@ -32,9 +32,6 @@ export default function EditPDFClient() {
     <div className="container mx-auto max-w-7xl px-4 xl:px-8 py-10 md:py-16">
       
       {/* Top Leaderboard Ad */}
-      <div className="mb-10 text-center">
-        <AdSenseBanner dataAdSlot="GENERIC_TOP" className="h-[90px] w-full max-w-[728px] mx-auto bg-slate-900/30 rounded-xl" />
-      </div>
 
       <div className="flex flex-col gap-10">
         
@@ -91,7 +88,7 @@ export default function EditPDFClient() {
 
         {/* Bottom Ad Area (previously sidebar) */}
         <div className="w-full space-y-8">
-           <AdSenseBanner dataAdSlot="GENERIC_SIDEBAR" className="h-[280px] w-full bg-slate-900/50 rounded-xl border border-[var(--color-border-base)]" />
+           <AdSlot placement="sidebar" desktopOnly />
         </div>
 
       </div>

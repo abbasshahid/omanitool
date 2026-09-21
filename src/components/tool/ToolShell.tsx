@@ -3,7 +3,7 @@ import { ChevronRight, ShieldCheck } from 'lucide-react';
 import { getCategory, getRelatedTools, toolPath, type Tool } from '@/lib/tools/registry';
 import { generateFaqSchema, generateSoftwareSchema } from '@/lib/seo';
 import UplinkMeter from '@/components/layout/UplinkMeter';
-import AdSenseBanner from '@/components/ads/AdSenseBanner';
+import AdSlot from '@/components/ads/AdSlot';
 
 export interface ToolFaq {
   question: string;
@@ -118,6 +118,7 @@ export default function ToolShell({ tool, children, steps, faq, privacyNote }: T
               </div>
             </section>
           )}
+          <AdSlot placement="footer" className="mt-10" />
         </div>
 
         {/* ---------------------------------------------------------- sidebar */}
@@ -159,10 +160,7 @@ export default function ToolShell({ tool, children, steps, faq, privacyNote }: T
             </div>
           )}
 
-          <AdSenseBanner
-            dataAdSlot="TOOL_SIDEBAR"
-            className="hidden h-[600px] rounded-[var(--radius-lg)] border border-dashed border-[var(--border)] lg:block"
-          />
+          <AdSlot placement="sidebar" desktopOnly className="sticky top-20" />
         </aside>
       </div>
     </div>

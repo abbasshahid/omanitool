@@ -1,6 +1,6 @@
 import { getAllPosts } from '@/lib/blog';
 import Link from 'next/link';
-import AdSenseBanner from '@/components/ads/AdSenseBanner';
+import AdSlot from '@/components/ads/AdSlot';
 import { Calendar, User, ArrowRight } from 'lucide-react';
 import type { Metadata } from 'next';
 
@@ -20,9 +20,6 @@ export default function BlogIndexPage() {
   return (
     <div className="container mx-auto max-w-7xl px-4 xl:px-8 py-10 md:py-16">
       
-      <div className="mb-10 text-center">
-        <AdSenseBanner dataAdSlot="BLOG_INDEX_TOP" className="h-[90px] w-full max-w-[728px] mx-auto bg-slate-900/30 rounded-xl" />
-      </div>
 
       <div className="mb-12 text-center max-w-3xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-extrabold text-[var(--color-text-main)] mb-6">

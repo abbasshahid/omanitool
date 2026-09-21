@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import FileUploader from '@/components/shared/FileUploader';
-import AdSenseBanner from '@/components/ads/AdSenseBanner';
+import AdSlot from '@/components/ads/AdSlot';
 import { getToolById } from '@/lib/toolsConfig';
 import { RefreshCw, Download, FileText, SplitSquareHorizontal, CheckSquare, Square } from 'lucide-react';
 import { PDFDocument } from 'pdf-lib';
@@ -106,9 +106,6 @@ export default function SplitPDFClient() {
   return (
     <div className="container mx-auto max-w-7xl px-4 xl:px-8 py-10 md:py-16">
       
-      <div className="mb-10 text-center">
-        <AdSenseBanner dataAdSlot="SPLIT_TOP" className="h-[90px] w-full max-w-[728px] mx-auto bg-slate-900/30 rounded-xl" />
-      </div>
 
       <div className="flex flex-col lg:flex-row gap-10">
         
@@ -205,7 +202,6 @@ export default function SplitPDFClient() {
                    </div>
                 )}
 
-
                 {!isDone ? (
                   <div className="pt-6 border-t border-[var(--color-border-base)] flex justify-between items-center">
                      <span className="text-sm font-medium text-[var(--color-text-main)]">
@@ -250,7 +246,7 @@ export default function SplitPDFClient() {
         </div>
 
         <aside className="w-full lg:w-[336px] flex-shrink-0 space-y-8">
-           <AdSenseBanner dataAdSlot="SPLIT_SIDEBAR" className="h-[600px] w-full bg-slate-900/50 rounded-xl border border-[var(--color-border-base)]" />
+           <AdSlot placement="sidebar" desktopOnly />
         </aside>
 
       </div>

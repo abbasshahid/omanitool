@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { constructMetadata } from '@/lib/seo';
@@ -5,7 +6,7 @@ import { CATEGORIES, getGroupedTools, POPULAR_TOOLS, TOOLS } from '@/lib/tools/r
 import ToolCard from '@/components/ui/ToolCard';
 import ToolSearch from '@/components/layout/ToolSearch';
 import UplinkMeter from '@/components/layout/UplinkMeter';
-import AdSenseBanner from '@/components/ads/AdSenseBanner';
+import AdSlot from '@/components/ads/AdSlot';
 
 export const metadata = constructMetadata({
   title: `OmniTool — ${TOOLS.length} free file tools that run in your browser`,
@@ -61,12 +62,16 @@ export default function Home() {
       {/* ------------------------------------------------------- categories */}
       <div className="shell py-10 md:py-12">
         <div className="flex flex-col gap-10">
-          {CATEGORIES.map((category) => {
+          {CATEGORIES.map((category, categoryIndex) => {
             const groups = getGroupedTools(category.id);
             const count = groups.reduce((total, group) => total + group.tools.length, 0);
 
             return (
-              <section key={category.id} id={category.id} className="scroll-mt-20">
+              <Fragment key={category.id}>
+                {/* One in-feed unit, placed between two sections rather than
+                    inside either, so it never separates a heading from its grid. */}
+                {categoryIndex === 2 && <AdSlot placement="inFeed" className="my-2" />}
+              <section id={category.id} className="scroll-mt-20">
                 <div className="mb-4 flex flex-wrap items-end justify-between gap-3 border-b border-[var(--border)] pb-2.5">
                   <div>
                     <div className="flex items-baseline gap-3">
@@ -99,14 +104,12 @@ export default function Home() {
                     ))}
                 </div>
               </section>
+              </Fragment>
             );
           })}
         </div>
 
-        <AdSenseBanner
-          dataAdSlot="HOMEPAGE_FOOTER"
-          className="mt-16 h-[250px] rounded-[var(--radius-lg)] border border-dashed border-[var(--border)]"
-        />
+        <AdSlot placement="footer" className="mt-12" />
       </div>
     </>
   );

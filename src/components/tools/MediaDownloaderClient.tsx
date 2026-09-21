@@ -7,7 +7,7 @@ import {
   Loader2, ExternalLink, Scissors, ChevronDown, Sparkles
 } from 'lucide-react';
 import JSZip from 'jszip';
-import AdSenseBanner from '@/components/ads/AdSenseBanner';
+import AdSlot from '@/components/ads/AdSlot';
 
 interface MediaResult {
   images: { url: string; title?: string }[];
@@ -160,8 +160,6 @@ export default function MediaDownloaderClient() {
           </div>
         )}
       </div>
-
-      <AdSenseBanner dataAdSlot="TOOLS_TOP_BANNER" className="mb-12" />
 
       {/* Results Section */}
       {result && (
@@ -328,7 +326,7 @@ export default function MediaDownloaderClient() {
         </div>
       )}
 
-      <AdSenseBanner dataAdSlot="TOOLS_BOTTOM_BANNER" className="mt-20" />
+      <AdSlot placement="footer" />
     </div>
   );
 }

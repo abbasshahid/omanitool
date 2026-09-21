@@ -10,7 +10,7 @@ import {
 } from '@/lib/tools/registry';
 import ToolCard from '@/components/ui/ToolCard';
 import ToolSearch from '@/components/layout/ToolSearch';
-import AdSenseBanner from '@/components/ads/AdSenseBanner';
+import AdSlot from '@/components/ads/AdSlot';
 
 const VALID = new Set(CATEGORIES.map((category) => category.id));
 
@@ -109,10 +109,7 @@ export default async function CategoryPage({
         </div>
       </section>
 
-      <AdSenseBanner
-        dataAdSlot="CATEGORY_FOOTER"
-        className="mt-12 h-[250px] rounded-[var(--radius-lg)] border border-dashed border-[var(--border)]"
-      />
+      <AdSlot placement="footer" className="mt-12" />
     </div>
   );
 }
