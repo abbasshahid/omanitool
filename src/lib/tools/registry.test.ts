@@ -1,7 +1,15 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { CATALOGUE_ALL, CATEGORIES, getRelatedTools, searchTools, TOOLS } from './registry';
+import {
+  CATALOGUE_ALL,
+  CATEGORIES,
+  countToolsInCategory,
+  getActiveCategories,
+  getRelatedTools,
+  searchTools,
+  TOOLS,
+} from './registry';
 
 const pageFor = (id: string) => join(process.cwd(), 'src', 'app', 'tools', id, 'page.tsx');
 
@@ -45,6 +53,19 @@ describe('registry integrity', () => {
       (tool) => tool.status === 'planned' && existsSync(pageFor(tool.id)),
     ).map((tool) => tool.id);
     expect(shipped, 'page exists — remove status: "planned"').toEqual([]);
+  });
+
+  it('lists no category that has nothing in it', () => {
+    // An empty category renders as a heading reading "00 tools" with no grid.
+    for (const category of getActiveCategories()) {
+      expect(countToolsInCategory(category.id), category.id).toBeGreaterThan(0);
+    }
+  });
+
+  it('keeps empty categories defined, just hidden', () => {
+    // They are filtered from the UI, not deleted, so the tools planned for
+    // them can be shipped without re-adding the category.
+    expect(CATEGORIES.length).toBeGreaterThan(getActiveCategories().length);
   });
 
   it('marks only the tools that genuinely need a server', () => {

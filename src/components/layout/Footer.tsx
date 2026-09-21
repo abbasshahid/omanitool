@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { CATEGORIES, POPULAR_TOOLS, toolPath, TOOLS } from '@/lib/tools/registry';
+import { getActiveCategories, POPULAR_TOOLS, toolPath, TOOLS } from '@/lib/tools/registry';
 import { clearConsent } from '@/lib/ads/consent';
 
 export default function Footer() {
@@ -22,15 +22,15 @@ export default function Footer() {
               <span className="font-display text-base font-bold">OmniTool</span>
             </Link>
             <p className="max-w-xs text-sm leading-relaxed text-[var(--text-muted)]">
-              {TOOLS.length} tools for files, images and text. Every one of them runs in your
-              browser, so your files stay on your machine.
+              {TOOLS.length} tools for files, images and text. Every one runs inside your
+              browser — nothing you open is ever uploaded, stored or seen by us.
             </p>
           </div>
 
           <div>
             <h3 className="eyebrow mb-3">Categories</h3>
             <ul className="flex flex-col gap-2">
-              {CATEGORIES.map((category) => (
+              {getActiveCategories().map((category) => (
                 <li key={category.id}>
                   <Link
                     href={`/tools/category/${category.id}`}

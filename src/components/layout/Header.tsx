@@ -1,18 +1,60 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ChevronDown, Heart, Menu, X } from 'lucide-react';
-import { CATEGORIES, getGroupedTools, toolPath, type ToolCategory } from '@/lib/tools/registry';
+import { ChevronDown, Heart, Menu, ShieldCheck, X } from 'lucide-react';
+import {
+  getActiveCategories,
+  getGroupedTools,
+  toolPath,
+  type ToolCategory,
+} from '@/lib/tools/registry';
 import ToolSearch from './ToolSearch';
 import ThemeToggle from './ThemeToggle';
 
+/**
+ * Leaving the trigger does not close the menu immediately. Between the nav row
+ * and the panel there is a strip of header that belongs to neither, and
+ * closing the instant the pointer crosses it makes the menu impossible to
+ * reach. A short grace period, cancelled on re-entry, fixes that.
+ */
+const CLOSE_DELAY_MS = 220;
+
 export default function Header() {
   const pathname = usePathname();
+  const categories = getActiveCategories();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openCategory, setOpenCategory] = useState<ToolCategory | null>(null);
   const headerRef = useRef<HTMLElement>(null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const cancelClose = useCallback(() => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  }, []);
+
+  const open = useCallback(
+    (category: ToolCategory) => {
+      cancelClose();
+      setOpenCategory(category);
+    },
+    [cancelClose],
+  );
+
+  const scheduleClose = useCallback(() => {
+    cancelClose();
+    closeTimer.current = setTimeout(() => setOpenCategory(null), CLOSE_DELAY_MS);
+  }, [cancelClose]);
+
+  const closeNow = useCallback(() => {
+    cancelClose();
+    setOpenCategory(null);
+  }, [cancelClose]);
+
+  useEffect(() => cancelClose, [cancelClose]);
 
   // Route changes close whatever was open. Adjusting during render rather than
   // in an effect avoids a frame where the new page shows behind an open menu.
@@ -50,7 +92,10 @@ export default function Header() {
   }, []);
 
   return (
-    <header ref={headerRef} className="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--bg)]/85 backdrop-blur-md">
+    <header
+      ref={headerRef}
+      className="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--bg)]/85 backdrop-blur-md"
+    >
       <div className="shell">
         <div className="flex h-14 items-center gap-4">
           <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="OmniTool home">
@@ -59,35 +104,46 @@ export default function Header() {
           </Link>
 
           {/* ------------------------------------------------- desktop nav */}
-          <nav className="hidden lg:flex" onMouseLeave={() => setOpenCategory(null)}>
+          <nav className="hidden lg:flex" onMouseLeave={scheduleClose} onMouseEnter={cancelClose}>
             <ul className="flex items-center">
-              {CATEGORIES.map((category) => {
-                const open = openCategory === category.id;
+              {categories.map((category) => {
+                const isOpen = openCategory === category.id;
                 return (
-                  <li key={category.id} className="relative">
-                    <button
-                      type="button"
-                      aria-expanded={open}
-                      onMouseEnter={() => setOpenCategory(category.id)}
-                      onClick={() => setOpenCategory(open ? null : category.id)}
+                  <li key={category.id}>
+                    {/*
+                     * A link, not a button: pressing a category name goes to
+                     * its full listing. Hover and keyboard focus open the menu.
+                     */}
+                    <Link
+                      href={`/tools/category/${category.id}`}
+                      aria-haspopup="true"
+                      aria-expanded={isOpen}
+                      onMouseEnter={() => open(category.id)}
+                      onFocus={() => open(category.id)}
+                      onClick={closeNow}
                       className={`flex items-center gap-1 rounded-[var(--radius-md)] px-3 py-2 text-sm font-medium transition-colors ${
-                        open
+                        isOpen
                           ? 'bg-[var(--surface-2)] text-[var(--text)]'
                           : 'text-[var(--text-muted)] hover:text-[var(--text)]'
                       }`}
                     >
                       {category.label}
                       <ChevronDown
-                        className={`size-3.5 transition-transform ${open ? 'rotate-180' : ''}`}
+                        className={`size-3.5 transition-transform ${isOpen ? 'rotate-180' : ''}`}
                       />
-                    </button>
+                    </Link>
                   </li>
                 );
               })}
             </ul>
 
             {openCategory && (
-              <MegaMenu category={openCategory} onNavigate={() => setOpenCategory(null)} />
+              <MegaMenu
+                category={openCategory}
+                onNavigate={closeNow}
+                onMouseEnter={cancelClose}
+                onMouseLeave={scheduleClose}
+              />
             )}
           </nav>
 
@@ -108,7 +164,7 @@ export default function Header() {
 
             <button
               type="button"
-              onClick={() => setMobileOpen((open) => !open)}
+              onClick={() => setMobileOpen((value) => !value)}
               aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={mobileOpen}
               className="btn-secondary size-9 p-0 lg:hidden"
@@ -141,19 +197,31 @@ function Logo() {
 function MegaMenu({
   category,
   onNavigate,
+  onMouseEnter,
+  onMouseLeave,
 }: {
   category: ToolCategory;
   onNavigate: () => void;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
 }) {
   const groups = getGroupedTools(category);
-  const meta = CATEGORIES.find((entry) => entry.id === category)!;
+  const meta = getActiveCategories().find((entry) => entry.id === category);
+  if (!meta) return null;
 
   return (
-    <div className="absolute left-0 right-0 top-full z-50 pt-1">
-      <div className="shell">
-        <div className="animate-rise overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-pop)]">
-          <div className="flex items-baseline justify-between gap-4 border-b border-[var(--border)] px-4 py-2.5">
-            <p className="text-xs text-[var(--text-muted)]">{meta.blurb}</p>
+    <div
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      className="absolute left-0 right-0 top-full z-50"
+    >
+      <div className="shell pt-1">
+        <div className="animate-rise overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] text-left shadow-[var(--shadow-pop)]">
+          <div className="flex items-center justify-between gap-4 border-b border-[var(--border)] px-4 py-2.5">
+            <p className="flex items-center gap-1.5 font-mono text-[11px] text-[var(--live)]">
+              <ShieldCheck className="size-3.5" />
+              Every one of these runs on your device
+            </p>
             <Link
               href={`/tools/category/${category}`}
               onClick={onNavigate}
@@ -165,13 +233,12 @@ function MegaMenu({
 
           {/*
            * Capped to the space below the header and scrolled if it overflows.
-           * The PDF category alone is 25 tools, which ran off the bottom of a
-           * laptop screen with no way to reach the last group.
+           * The PDF category alone is 25 tools across six groups.
            */}
           <div className="scrollbar-thin max-h-[calc(100vh-8rem)] overflow-y-auto">
             <div className="grid gap-x-5 gap-y-4 p-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {groups.map(({ group, tools }) => (
-                <div key={group} className="break-inside-avoid">
+                <div key={group}>
                   <h3 className="eyebrow mb-1.5">{group}</h3>
                   <ul className="flex flex-col">
                     {tools.map((tool) => {
@@ -203,33 +270,43 @@ function MegaMenu({
 }
 
 function MobileMenu({ onNavigate }: { onNavigate: () => void }) {
-  const [expanded, setExpanded] = useState<ToolCategory | null>('pdf');
+  const categories = getActiveCategories();
+  const [expanded, setExpanded] = useState<ToolCategory | null>(categories[0]?.id ?? null);
 
   return (
     <div className="fixed inset-x-0 bottom-0 top-14 z-50 overflow-y-auto overscroll-contain bg-[var(--bg)] lg:hidden">
       <div className="shell flex flex-col gap-5 py-5 pb-24">
         <ToolSearch size="compact" />
 
-        {CATEGORIES.map((category) => {
-          const open = expanded === category.id;
+        {categories.map((category) => {
+          const isOpen = expanded === category.id;
           const groups = getGroupedTools(category.id);
           return (
             <div key={category.id} className="border-b border-[var(--border)] pb-1 last:border-0">
-              <button
-                type="button"
-                aria-expanded={open}
-                onClick={() => setExpanded(open ? null : category.id)}
-                className="flex w-full items-center justify-between py-3 text-left"
-              >
-                <span className="font-display text-base font-bold">{category.label}</span>
-                <ChevronDown
-                  className={`size-4 text-[var(--text-subtle)] transition-transform ${
-                    open ? 'rotate-180' : ''
-                  }`}
-                />
-              </button>
+              <div className="flex items-center justify-between">
+                <Link
+                  href={`/tools/category/${category.id}`}
+                  onClick={onNavigate}
+                  className="py-3 font-display text-base font-bold"
+                >
+                  {category.label}
+                </Link>
+                <button
+                  type="button"
+                  aria-expanded={isOpen}
+                  aria-label={`${isOpen ? 'Collapse' : 'Expand'} ${category.label}`}
+                  onClick={() => setExpanded(isOpen ? null : category.id)}
+                  className="btn-ghost size-9 p-0"
+                >
+                  <ChevronDown
+                    className={`size-4 text-[var(--text-subtle)] transition-transform ${
+                      isOpen ? 'rotate-180' : ''
+                    }`}
+                  />
+                </button>
+              </div>
 
-              {open && (
+              {isOpen && (
                 <div className="flex flex-col gap-4 pb-3">
                   {groups.map(({ group, tools }) => (
                     <div key={group}>

@@ -830,6 +830,24 @@ export const getCategory = (id: ToolCategory) =>
   CATEGORIES.find((category) => category.id === id)!;
 
 /** Groups within a category, in the order the category declares them. */
+/**
+ * Categories that currently have at least one live tool.
+ *
+ * Planned tools are filtered out of TOOLS, so a category whose tools are all
+ * still unbuilt would otherwise render as an empty section reading "00 tools".
+ * The category definitions stay in place — they simply do not appear until
+ * something in them ships.
+ */
+export function getActiveCategories() {
+  return CATEGORIES.filter((category) =>
+    TOOLS.some((tool) => tool.category === category.id),
+  );
+}
+
+export function countToolsInCategory(category: ToolCategory) {
+  return TOOLS.filter((tool) => tool.category === category).length;
+}
+
 export function getGroupedTools(category: ToolCategory) {
   const { groups } = getCategory(category);
   const tools = getToolsByCategory(category);

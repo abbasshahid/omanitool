@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import { constructMetadata } from '@/lib/seo';
 import {
-  CATEGORIES,
+  getActiveCategories,
   getCategory,
   getGroupedTools,
   type ToolCategory,
@@ -12,10 +12,12 @@ import ToolCard from '@/components/ui/ToolCard';
 import ToolSearch from '@/components/layout/ToolSearch';
 import AdSlot from '@/components/ads/AdSlot';
 
-const VALID = new Set(CATEGORIES.map((category) => category.id));
+// Only categories with at least one live tool get a page; an empty listing
+// is a thin page, and Google treats those as low value.
+const VALID = new Set(getActiveCategories().map((category) => category.id));
 
 export function generateStaticParams() {
-  return CATEGORIES.map((category) => ({ category: category.id }));
+  return getActiveCategories().map((category) => ({ category: category.id }));
 }
 
 export async function generateMetadata({
@@ -97,15 +99,17 @@ export default async function CategoryPage({
       <section className="mt-16 border-t border-[var(--border)] pt-8">
         <h2 className="eyebrow mb-4">Other categories</h2>
         <div className="flex flex-wrap gap-2">
-          {CATEGORIES.filter((entry) => entry.id !== meta.id).map((entry) => (
+          {getActiveCategories()
+            .filter((entry) => entry.id !== meta.id)
+            .map((entry) => (
             <Link
               key={entry.id}
               href={`/tools/category/${entry.id}`}
               className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-sm text-[var(--text-muted)] transition-colors hover:border-[var(--signal)] hover:text-[var(--text)]"
             >
               {entry.label}
-            </Link>
-          ))}
+              </Link>
+            ))}
         </div>
       </section>
 

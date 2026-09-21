@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ChevronRight, ShieldCheck } from 'lucide-react';
+import { Check, ChevronRight, ShieldCheck } from 'lucide-react';
 import { getCategory, getRelatedTools, toolPath, type Tool } from '@/lib/tools/registry';
 import { generateFaqSchema, generateSoftwareSchema } from '@/lib/seo';
 import UplinkMeter from '@/components/layout/UplinkMeter';
@@ -123,17 +123,27 @@ export default function ToolShell({ tool, children, steps, faq, privacyNote }: T
 
         {/* ---------------------------------------------------------- sidebar */}
         <aside className="flex flex-col gap-6">
-          <div className="panel p-4">
-            <p className="flex items-center gap-2 text-sm font-semibold">
+          <div className="rounded-[var(--radius-lg)] border border-[var(--live)]/30 bg-[var(--surface)] p-4">
+            <p className="flex items-center gap-2 text-sm font-bold">
               <ShieldCheck className="size-4 text-[var(--live)]" />
-              {tool.usesNetwork ? 'What gets sent' : 'Runs on your machine'}
+              {tool.usesNetwork ? 'What gets sent' : 'This file is not uploaded'}
             </p>
             <p className="mt-2 text-sm leading-relaxed text-[var(--text-muted)]">
               {privacyNote ??
                 (tool.usesNetwork
-                  ? 'This tool asks our server to fetch a public page for you, because browsers block cross-site requests. Only the address you type is sent.'
-                  : 'Your file is opened and processed by your own browser. It is never uploaded, so there is nothing for us to store, see or delete.')}
+                  ? 'This tool asks our server to fetch a public page for you, because browsers block cross-site requests. Only the address you type is sent — nothing from your device.'
+                  : 'Your browser opens the file from your own disk and does the work there. Nothing is transmitted, so there is no copy of your document for us to store, read, hand over or lose.')}
             </p>
+            {!tool.usesNetwork && (
+              <ul className="mt-3 flex flex-col gap-1.5 border-t border-[var(--border)] pt-3">
+                {['No upload', 'No account', 'No file size limit', 'Works offline'].map((item) => (
+                  <li key={item} className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
+                    <Check className="size-3.5 shrink-0 text-[var(--live)]" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           {related.length > 0 && (
